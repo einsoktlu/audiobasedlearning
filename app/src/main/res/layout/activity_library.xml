@@ -2,22 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_layout"
+    android:id="@+id/library_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_launcher_background"
-    tools:context=".MainActivity">
+    android:background="@drawable/ic_launcher_background">
 
     <include
-        android:id="@+id/include2"
-        layout="@layout/speech"
-        android:visibility="visible" />
+        android:id="@+id/include"
+        layout="@layout/speech" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
+        android:text="My Library"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"

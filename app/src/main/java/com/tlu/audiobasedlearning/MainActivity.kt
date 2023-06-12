@@ -10,9 +10,12 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +26,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAppContext(): Context {
         return this
+    }
+
+    private fun setListeners() {
+        findViewById<ImageView>(R.id.microphone).setOnClickListener {
+            if (mIsListening) {
+                handleSpeechEnd()
+            } else {
+                handleSpeechBegin()
+            }
+        }
+    }
+
+    private fun setContentViewWithListeners(@LayoutRes id: Int) {
+        setContentView(id)
+
+        mUserInfoText = findViewById(R.id.user_info_text)
+        mUserUtteranceOutput = findViewById(R.id.user_utterance)
+
+        setListeners()
     }
 
     private var mSpeechRecognizer: SpeechRecognizer? = null
@@ -37,18 +59,18 @@ class MainActivity : AppCompatActivity() {
 
         mUserInfoText = findViewById(R.id.user_info_text)
         mUserUtteranceOutput = findViewById(R.id.user_utterance)
-        mCommandsList = ArrayList()
 
+        initCommands()
         verifyAudioPermissions()
         createSpeechRecognizer()
 
-        findViewById<ImageView>(R.id.microphone).setOnClickListener {
-            if (mIsListening) {
-                handleSpeechEnd()
-            } else {
-                handleSpeechBegin()
-            }
-        }
+        setListeners()
+    }
+
+    private fun initCommands() {
+        mCommandsList = ArrayList()
+        mCommandsList!!.add("library")
+        mCommandsList!!.add("back")
     }
 
     private fun verifyAudioPermissions() {
@@ -100,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                 if (matches != null && matches.size > 0) {
                     // The results are added in decreasing order of confidence to the list
                     val command = matches[0]
-                    mUserUtteranceOutput?.text = command
+                    mUserUtteranceOutput!!.text = command
                     handleCommand(command)
                 }
             }
@@ -112,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 if (matches != null && matches.size > 0) {
                     // handle partial speech results
                     val partialText = matches[0]
-                    mUserUtteranceOutput?.text = partialText
+                    mUserUtteranceOutput!!.text = partialText
                 }
             }
 
@@ -120,9 +142,19 @@ class MainActivity : AppCompatActivity() {
 
             private fun handleCommand(command: String) {
                 // Function to handle user commands - TBD
-                if (mCommandsList!!.contains(command)) {
+                if (mCommandsList!!.contains(command.lowercase())) {
                     // Successful utterance, notify user
                     Toast.makeText(getAppContext(), "Executing: $command", Toast.LENGTH_LONG).show()
+
+                    when (command.lowercase()) {
+                        "library" -> {
+                            setContentViewWithListeners(R.layout.activity_library)
+                        }
+
+                        "back" -> {
+                            setContentViewWithListeners(R.layout.activity_main)
+                        }
+                    }
                 } else {
                     // Unsucessful utterance, show failure message on screen
                     Toast.makeText(getAppContext(), "Could not recognize command", Toast.LENGTH_LONG).show()
@@ -140,14 +172,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleSpeechBegin() {
         // start audio session
-        mUserInfoText?.setText(R.string.listening)
+        mUserInfoText!!.setText(R.string.listening)
         mIsListening = true
         mSpeechRecognizer!!.startListening(createIntent())
     }
 
     private fun handleSpeechEnd() {
         // end audio session
-        mUserInfoText?.setText(R.string.detected_speech)
+        mUserInfoText!!.setText(R.string.detected_speech)
         mIsListening = false
         mSpeechRecognizer!!.cancel()
     }

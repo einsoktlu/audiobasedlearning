@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Audio Based Learning</string>
+    <string name="detected_speech"></string>
+    <string name="listening">Listening…</string>
+</resources>

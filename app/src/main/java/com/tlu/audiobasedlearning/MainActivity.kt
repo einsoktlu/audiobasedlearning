@@ -2,30 +2,24 @@ package com.tlu.audiobasedlearning
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
     companion object {
         // This constant is needed to verify the audio permission result
         private const val ASR_PERMISSION_REQUEST_CODE = 0
-    }
-
-    private fun getAppContext(): Context {
-        return this
     }
 
     private fun setListeners() {
@@ -65,12 +59,18 @@ class MainActivity : AppCompatActivity() {
         createSpeechRecognizer()
 
         setListeners()
+
+        findViewById<Button>(R.id.button2).setOnClickListener {
+            val intent = Intent(applicationContext, MediaPlayerActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initCommands() {
         mCommandsList = ArrayList()
         mCommandsList!!.add("library")
         mCommandsList!!.add("back")
+        mCommandsList!!.add("media")
     }
 
     private fun verifyAudioPermissions() {
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                 // Function to handle user commands - TBD
                 if (mCommandsList!!.contains(command.lowercase())) {
                     // Successful utterance, notify user
-                    Toast.makeText(getAppContext(), "Executing: $command", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Executing: $command", Toast.LENGTH_LONG).show()
 
                     when (command.lowercase()) {
                         "library" -> {
@@ -154,10 +154,15 @@ class MainActivity : AppCompatActivity() {
                         "back" -> {
                             setContentViewWithListeners(R.layout.activity_main)
                         }
+
+                        "media" -> {
+                            val intent = Intent(applicationContext, MediaPlayerActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
                 } else {
                     // Unsucessful utterance, show failure message on screen
-                    Toast.makeText(getAppContext(), "Could not recognize command", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Could not recognize command", Toast.LENGTH_LONG).show()
                 }
             }
         })

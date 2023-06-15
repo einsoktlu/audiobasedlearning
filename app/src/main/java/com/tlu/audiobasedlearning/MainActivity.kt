@@ -2,11 +2,8 @@ package com.tlu.audiobasedlearning
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageItemInfo
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -23,7 +20,6 @@ import com.alan.alansdk.AlanCallback
 import com.alan.alansdk.AlanConfig
 import com.alan.alansdk.button.AlanButton
 import com.alan.alansdk.events.EventCommand
-import com.budiyev.android.codescanner.BuildConfig
 import org.json.JSONException
 
 class MainActivity : AppCompatActivity() {
@@ -75,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val command = eventCommand.data
                     val commandName = command.getJSONObject("data").getString("command")
-                    // Log.d("AlanButton", "onCommand: commandName: $commandName")
+                    Log.d("AlanButton", "onCommand: commandName: $commandName")
                     mUserUtteranceOutput!!.text = commandName
                 } catch (e: JSONException) {
                     e.message?.let { Log.e("AlanButton", it) }

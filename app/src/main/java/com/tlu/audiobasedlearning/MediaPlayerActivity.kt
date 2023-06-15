@@ -1,8 +1,6 @@
 package com.tlu.audiobasedlearning
 
-import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -41,12 +39,13 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         audioLength!!.text = millisecondsToTimestamp(mediaPlayer!!.duration)
 
-        val metadata = MediaMetadataRetriever()
-        val path = "android.resource://" + packageName + "/" + R.raw.cocktails
-        metadata.setDataSource(this, Uri.parse(path))
-        val title = metadata.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
-        metadata.release()
-        findViewById<TextView>(R.id.textView6).text = title
+        //val metadata = MediaMetadataRetriever()
+        //val path = "android.resource://" + packageName + "/" + R.raw.cocktails
+        //metadata.setDataSource(this, Uri.parse(path))
+        //val title = metadata.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
+        //metadata.release()
+
+        //findViewById<TextView>(R.id.textView6).text = exoPlayer!!.mediaMetadata.mediaType.toString()
 
         setListeners()
     }

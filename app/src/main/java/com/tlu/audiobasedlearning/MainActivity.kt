@@ -2,12 +2,16 @@ package com.tlu.audiobasedlearning
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageItemInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +19,12 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.alan.alansdk.AlanCallback
+import com.alan.alansdk.AlanConfig
+import com.alan.alansdk.button.AlanButton
+import com.alan.alansdk.events.EventCommand
+import com.budiyev.android.codescanner.BuildConfig
+import org.json.JSONException
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -53,6 +63,27 @@ class MainActivity : AppCompatActivity() {
 
         mUserInfoText = findViewById(R.id.user_info_text)
         mUserUtteranceOutput = findViewById(R.id.user_utterance)
+
+        val apiKey = applicationInfo.metaData.getString("ALAN_API_KEY")
+        val config = AlanConfig.builder().setProjectId(apiKey).build()
+        val alanButton = findViewById<AlanButton>(R.id.alan_button)
+        alanButton?.initWithConfig(config)
+
+        val alanCallback: AlanCallback = object : AlanCallback() {
+            /// Handling commands from Alan AI Studio
+            override fun onCommand(eventCommand: EventCommand) {
+                try {
+                    val command = eventCommand.data
+                    val commandName = command.getJSONObject("data").getString("command")
+                    // Log.d("AlanButton", "onCommand: commandName: $commandName")
+                    mUserUtteranceOutput!!.text = commandName
+                } catch (e: JSONException) {
+                    e.message?.let { Log.e("AlanButton", it) }
+                }
+            }
+        }
+
+        alanButton?.registerCallback(alanCallback)
 
         initCommands()
         verifyAudioPermissions()

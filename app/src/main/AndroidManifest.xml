@@ -26,10 +26,8 @@
         </activity>
 
         <activity android:name=".MediaPlayerActivity" />
+        <activity android:name=".LibraryActivity" />
 
-        <meta-data
-            android:name="ALAN_API_KEY"
-            android:value="${ALAN_API_KEY}"/>
     </application>
 
 </manifest>

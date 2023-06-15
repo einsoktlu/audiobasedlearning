@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.alan.alansdk.button.AlanButton
 
 class MediaPlayerActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
@@ -18,10 +19,14 @@ class MediaPlayerActivity : AppCompatActivity() {
     private var audioLength: TextView? = null
     private var nowPlaying: TextView? = null
     private var seekBar: SeekBar? = null
+    private var alanButton: AlanButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediaplayer)
+
+        alanButton = findViewById(R.id.alan_button)
+        AlanAI.registerCallback(this, alanButton)
 
         mediaPlayer = MediaPlayer.create(this, R.raw.cocktails)
         playButton = findViewById(R.id.playButton)
@@ -53,6 +58,16 @@ class MediaPlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer!!.release()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        AlanAI.registerCallback(this, findViewById(R.id.alan_button))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        alanButton?.clearCallbacks()
     }
 
     private fun setListeners() {

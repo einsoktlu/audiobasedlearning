@@ -10,5 +10,5 @@ intent('Go to media player', p => {
 
 intent('Go back', p => {
     p.play({command: 'navigate', screen: 'back'});
-    p.play('Navigating back to home');
+    p.play('Navigating back');
 });

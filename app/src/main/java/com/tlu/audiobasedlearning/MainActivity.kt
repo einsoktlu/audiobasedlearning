@@ -2,17 +2,13 @@ package com.tlu.audiobasedlearning
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.alan.alansdk.AlanCallback
 import com.alan.alansdk.AlanConfig
 import com.alan.alansdk.button.AlanButton
-import com.alan.alansdk.events.EventCommand
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -20,29 +16,29 @@ class MainActivity : AppCompatActivity() {
         private const val ASR_PERMISSION_REQUEST_CODE = 0
     }
 
+    private var alanButton: AlanButton? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val apiKey = applicationInfo.metaData.getString("ALAN_API_KEY")
-        val config = AlanConfig.builder().setProjectId(apiKey).build()
-        val alanButton = findViewById<AlanButton>(R.id.alan_button)
+        val config = AlanConfig.builder().setProjectId(getString(R.string.alan_api_key)).build()
+        alanButton = findViewById(R.id.alan_button)
         alanButton?.initWithConfig(config)
 
-        val alanCallback: AlanCallback = object : AlanCallback() {
-            override fun onCommand(eventCommand: EventCommand) {
-                AlanAI.handleCommands(this@MainActivity, eventCommand.data.getJSONObject("data"))
-            }
-        }
-
-        alanButton?.registerCallback(alanCallback)
+        AlanAI.registerCallback(this, alanButton)
 
         verifyAudioPermissions()
+    }
 
-        findViewById<Button>(R.id.button2).setOnClickListener {
-            val intent = Intent(applicationContext, MediaPlayerActivity::class.java)
-            startActivity(intent)
-        }
+    override fun onRestart() {
+        super.onRestart()
+        AlanAI.registerCallback(this, findViewById(R.id.alan_button))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        alanButton?.clearCallbacks()
     }
 
     private fun verifyAudioPermissions() {

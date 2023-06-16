@@ -279,8 +279,8 @@ intent('Execute order 66', p => {
     p.play('Yes my Lord');
 });
 
-let chooseDrink = context(() => {
-    follow('(I want|get me) a $(DRINK tea|cup of tea|soda)', p => {
+/*let chooseDrink = context(() => {
+    follow('(I want to make a |how do I make) a $(DRINK mojito|cuba libre|pina colada)', p => {
         p.play(`You have ordered a ${p.DRINK.value}.`);
     })
 });
@@ -289,7 +289,19 @@ intent('Can I have something to drink', p => {
     p.play('(Sure|Yes), we have tea and soda.');
     p.play('Which would you like?');
     p.then(chooseDrink);
-});
+});*/
 
 // Try: "I want a cup of tea" -> "Can I have something to drink" -> "Get me a soda".
 // Notice: the first command wasn't matched again. This is because the context with this command wasn't active.
+
+let chooseDrink = context(() => {
+    follow('(I want to make a |how do I make) a $(DRINK mojito|cuba libre|pina colada)', p => {
+        if (p.DRINK.value === 'cuba libre') {
+            p.play('Sure! To make a cuba libre, follow these steps: Fill a highball glass with ice cubes. Squeeze the juice of a lime wedge into the glass and drop the wedge in. Pour the dark rum over the ice and lime. Top up the glass with cola and give it a gentle stir.');
+        } else if (p.DRINK.value === 'pina colada') {
+            p.play('Sure! To make a pina colada, follow these steps: Fill a blender with ice cubes. Add the white rum, pineapple juice, and coconut cream to the blender. Blend everything until smooth and frothy. Pour the mixture into a glass and garnish with a pineapple wedge.');
+        } else if (p.DRINK.value === 'mojito') {
+            p.play('Cut the lime into wedges and place them in a glass. Add the mint leaves and sugar to the glass. Muddle the lime, mint, and sugar gently using the back of a spoon. Fill the glass with crushed ice and pour the rum over it and stir. Top up the glass with soda water and garnish with a sprig of mint.');
+        }
+    });
+});

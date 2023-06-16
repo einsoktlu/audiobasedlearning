@@ -12,3 +12,7 @@ intent('Go back', p => {
     p.play({command: 'navigate', screen: 'back'});
     p.play('Navigating back');
 });
+
+intent('Execute order 66', p => {
+    p.play('Yes my Lord');
+});

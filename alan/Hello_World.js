@@ -62,7 +62,7 @@ intent('Hello world', p => {
 // You can use multiple patterns (https://alan.app/docs/server-api/patterns) in a single intent.
 // This will allow you to have the same response played or action taken for different user inputs.
 
-intent(
+/*intent(
     'Who\'s there',
     'What\'s your name',
     p => {
@@ -80,11 +80,11 @@ intent(
 const intentPatterns = [
     'What is your favorite food',
     'What food do you like',
-];
+];*/
 
-intent(intentPatterns, p => {
+/*intent(intentPatterns, p => {
     p.play('CPU time, yammy!');
-});
+});*/
 
 // Try: "What is your favorite food" or "What food do you like".
 
@@ -92,17 +92,17 @@ intent(intentPatterns, p => {
 // In this case, alternatives might be used in them (https://alan.app/docs/server-api/patterns#patterns-with-alternatives).
 // Alternative sets are defined as (alt_1|alt_2|alt_n).
 
-intent('(I will have|Get me) a coffee, please', p => {
+/*intent('(I will have|Get me) a coffee, please', p => {
     p.play('Sorry, I don\'t have hands to brew it.');
-});
+});*/
 
 // Try: "I will have a coffee, please" or "Get me a coffee, please".
 
 // You can define the alternative set to be optional (https://alan.app/docs/server-api/patterns#optional-alternatives).
 
-intent('(Start|begin|take|) survey', p => {
+/*intent('(Start|begin|take|) survey', p => {
     p.play('(Sure.|OK.|) Starting a customer survey.');
-});
+});*/
 
 // Try: "Survey" and "Start survey".
 // Notice that alternatives might also be used in responses.
@@ -115,7 +115,7 @@ intent('(Start|begin|take|) survey', p => {
 // Sometimes it is impossible to create a single pattern that will cover all possible variations and will not be overfit with meaningless combinations.
 // Try to avoid this by using all that is described above. You can have multiple patterns with multiple alternative sets (strict or optional).
 
-intent(
+/*intent(
     '(How is|what is) the (weather|temperature) (today|)',
     'Today\'s forecast',
     p => {
@@ -182,7 +182,7 @@ intent('What is $(DATE)', p => {
 
     p.play(`${p.DATE.value} is a date`);
     p.play(`It is ${formattedDate}`);
-});
+});*/*/
 
 // Try: "What is today", "What is tomorrow" and "What is next Friday".
 // The '.value' field of this slot contains the user input, and the '.moment' field contains the moment.js object.
@@ -194,12 +194,12 @@ intent('What is $(DATE)', p => {
 // The same logic applies to user-defined slots.
 // In patterns, the '_' symbol might be used as a pluralizer if added after a word. It means that this word might be used in both singular and plural forms.
 
-intent('Add $(NUMBER) $(INSTRUMENT trumpet_|guitar_|violin_) and $(NUMBER) $(INSTRUMENT trumpet_|guitar_|violin_)', p => {
+/*intent('Add $(NUMBER) $(INSTRUMENT trumpet_|guitar_|violin_) and $(NUMBER) $(INSTRUMENT trumpet_|guitar_|violin_)', p => {
     console.log('Numbers array:', p.NUMBER_);
     console.log('Instruments array:', p.INSTRUMENT_);
     p.play(`The first position of your order is: ${p.NUMBER_[0].number} ${p.INSTRUMENT_[0].value}`);
     p.play(`The second position of your order is: ${p.NUMBER_[1].number} ${p.INSTRUMENT_[1].value}`);
-});
+});*/
 
 // Try: "Add two guitars and one violin" or "Add five trumpets and three guitars".
 // In this intent, we also use the 'console.log()' function. The output of this function will be printed into the Info logs.
@@ -211,7 +211,7 @@ intent('Add $(NUMBER) $(INSTRUMENT trumpet_|guitar_|violin_) and $(NUMBER) $(INS
 // There are two ways how a context can be activated.
 // The first approach is to have an intent defined in the context.
 
-const openContext = context(() => {
+/*const openContext = context(() => {
     intent('Activate the context', p => {
         p.play('The context is now active');
     });
@@ -219,7 +219,7 @@ const openContext = context(() => {
     follow('Is the context active', p => {
         p.play('Yes. (It is active.|)');
     });
-});
+});*/
 
 // Try: "Is the context active" -> "Activate the context" -> "Is the context active"
 // Notice that the first time you will ask about the context being active Alan can't match your command.
@@ -228,25 +228,10 @@ const openContext = context(() => {
 
 // Another way how you can activate a context is by using the then() function (https://alan.app/docs/server-api/contexts#activating-the-context-manually).
 
-let chooseDrink = context(() => {
-    follow('(I want|get me) a $(DRINK tea|cup of tea|soda)', p => {
-        p.play(`You have ordered a ${p.DRINK.value}.`);
-    })
-});
-
-intent('Can I have something to drink', p => {
-    p.play('(Sure|Yes), we have tea and soda.');
-    p.play('Which would you like?');
-    p.then(chooseDrink);
-});
-
-// Try: "I want a cup of tea" -> "Can I have something to drink" -> "Get me a soda".
-// Notice: the first command wasn't matched again. This is because the context with this command wasn't active.
-
 // Contexts are very powerful tools at your disposal.
 // You can even create a conversational chain of any depth you like.
 
-let confirmOrder = context(() => {
+/*let confirmOrder = context(() => {
     follow('Yes', p => {
         p.play('Your order is confirmed');
     });
@@ -266,7 +251,7 @@ let chooseDish = context(() => {
 intent('What is on the menu', p => {
     p.play('We have pizza and burgers');
     p.then(chooseDish);
-});
+});*/
 
 // Before trying the next set of commands make sure that the flowchart is expanded.
 // Notice how different contexts are being activated one after another.
@@ -279,14 +264,32 @@ question(
     'What does this (app|script|project) do',
     'What is this (app|script|project|)',
     'Why do I need this',
-    reply('This is a Hello World Example project. Its main purpose is to get you introduced to basics of the Alan Platform!'),
+    reply('This is a audio workplace learning project. Its main purpose is to guide you in certain tasks through audible instructions'),
 );
 
 question(
     'How does this work',
     'How to use this',
     'What can I do here',
-    'What (should I|can I|to) say',
     'What commands are available',
-    reply('Just say: (hello world|what is the weather today|what is tomorrow|Add two guitars and one violin).'),
+    reply('Just say: (open library|Can you tell me how to make a mojito|Can you give tips on Safety gear).'),
 );
+
+intent('Execute order 66', p => {
+    p.play('Yes my Lord');
+});
+
+let chooseDrink = context(() => {
+    follow('(I want|get me) a $(DRINK tea|cup of tea|soda)', p => {
+        p.play(`You have ordered a ${p.DRINK.value}.`);
+    })
+});
+
+intent('Can I have something to drink', p => {
+    p.play('(Sure|Yes), we have tea and soda.');
+    p.play('Which would you like?');
+    p.then(chooseDrink);
+});
+
+// Try: "I want a cup of tea" -> "Can I have something to drink" -> "Get me a soda".
+// Notice: the first command wasn't matched again. This is because the context with this command wasn't active.

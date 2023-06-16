@@ -13,6 +13,12 @@ intent('Go back', p => {
     p.play('Navigating back');
 });
 
-intent('Execute order 66', p => {
-    p.play('Yes my Lord');
+intent('pause', p =>) {
+    p.play({command: 'pause', screen 'media'})
+    p.play('Pausing your audio file');
+});
+
+intent('resume', p =>) {
+    p.play({command: 'resume', screen 'media'})
+    p.play('Resuming your audio file');
 });

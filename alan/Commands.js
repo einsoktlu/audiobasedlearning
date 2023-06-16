@@ -1,16 +1,16 @@
 intent('Go to my library', p => {
-    p.play({command: 'navigate', screen: 'library'});
     p.play('Opening your library');
+    p.play({command: 'navigate', screen: 'library'});
 });
 
 intent('Go to media player', p => {
-    p.play({command: 'navigate', screen: 'media'});
     p.play('Opening the media player');
+    p.play({command: 'navigate', screen: 'media'}); 
 });
 
 intent('Go back', p => {
-    p.play({command: 'navigate', screen: 'back'});
     p.play('Navigating back');
+    p.play({command: 'navigate', screen: 'back'});
 });
 
 intent('pause', p => {
@@ -19,6 +19,6 @@ intent('pause', p => {
 });
 
 intent('resume', p => {
-    p.play({command: 'resume', screen: 'media'});
     p.play('Resuming your audio file');
+    p.play({command: 'resume', screen: 'media'});
 });

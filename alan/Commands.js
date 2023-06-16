@@ -14,11 +14,11 @@ intent('Go back', p => {
 });
 
 intent('pause', p => {
-    p.play({command: 'pause', screen 'media'});
+    p.play({command: 'pause', screen: 'media'});
     p.play('Pausing your audio file');
 });
 
 intent('resume', p => {
-    p.play({command: 'resume', screen 'media'});
+    p.play({command: 'resume', screen: 'media'});
     p.play('Resuming your audio file');
 });

@@ -8,6 +8,10 @@ android {
     namespace 'com.tlu.audiobasedlearning'
     compileSdk 33
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId "com.tlu.audiobasedlearning"
         minSdk 24

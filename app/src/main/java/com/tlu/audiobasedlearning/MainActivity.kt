@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.alan.alansdk.AlanConfig
 import com.alan.alansdk.button.AlanButton
+import com.tlu.audiobasedlearning.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -17,23 +18,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var alanButton: AlanButton? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val config = AlanConfig.builder().setProjectId(getString(R.string.alan_api_key)).build()
         alanButton = findViewById(R.id.alan_button)
         alanButton?.initWithConfig(config)
 
         AlanAI.registerCallback(this, alanButton)
+        AlanAI.setVisualState(alanButton, "home")
 
         verifyAudioPermissions()
     }
 
     override fun onRestart() {
         super.onRestart()
-        AlanAI.registerCallback(this, findViewById(R.id.alan_button))
+        AlanAI.registerCallback(this, alanButton)
+        AlanAI.setVisualState(alanButton, "home")
     }
 
     override fun onStop() {

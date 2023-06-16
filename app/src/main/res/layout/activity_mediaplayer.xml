@@ -23,12 +23,12 @@
         android:id="@+id/pauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
+        android:layout_marginStart="112dp"
         android:text="@string/pause"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nowPlayingText"
-        app:layout_constraintVertical_bias="0.825" />
+        app:layout_constraintVertical_bias="0.409" />
 
     <Button
         android:id="@+id/playButton"
@@ -37,15 +37,15 @@
         android:text="@string/play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintHorizontal_bias="0.097"
         app:layout_constraintStart_toEndOf="@+id/pauseButton"
         app:layout_constraintTop_toBottomOf="@+id/nowPlayingText"
-        app:layout_constraintVertical_bias="0.824" />
+        app:layout_constraintVertical_bias="0.409" />
 
     <ImageView
         android:id="@+id/discimage"
-        android:layout_width="205dp"
-        android:layout_height="217dp"
+        android:layout_width="279dp"
+        android:layout_height="261dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,18 +90,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.606" />
 
     <include
         layout="@layout/speech" />

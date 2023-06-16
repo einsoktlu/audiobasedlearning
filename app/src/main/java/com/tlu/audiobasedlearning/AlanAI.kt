@@ -11,7 +11,8 @@ import org.json.JSONObject
 
 class AlanAI {
     companion object {
-        fun handleCommands(activity: AppCompatActivity, alanButton: AlanButton, commandJson: JSONObject) {
+        private fun handleCommands(activity: AppCompatActivity, alanButton: AlanButton, commandJson: JSONObject) {
+
             val command: String
 
             try {
@@ -58,6 +59,12 @@ class AlanAI {
             }
 
             alanButton?.registerCallback(alanCallback)
+        }
+
+        fun setVisualState(alanButton: AlanButton?, screen: String) {
+            val params = JSONObject()
+            params.put("screen", screen)
+            alanButton?.setVisualState(params.toString())
         }
     }
 }

@@ -4,8 +4,10 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Button
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.alan.alansdk.button.AlanButton
@@ -27,6 +29,7 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         alanButton = findViewById(R.id.alan_button)
         AlanAI.registerCallback(this, alanButton)
+        AlanAI.setVisualState(alanButton, "media")
 
         mediaPlayer = MediaPlayer.create(this, R.raw.cocktails)
         playButton = findViewById(R.id.playButton)
@@ -44,14 +47,6 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         audioLength!!.text = millisecondsToTimestamp(mediaPlayer!!.duration)
 
-        //val metadata = MediaMetadataRetriever()
-        //val path = "android.resource://" + packageName + "/" + R.raw.cocktails
-        //metadata.setDataSource(this, Uri.parse(path))
-        //val title = metadata.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
-        //metadata.release()
-
-        //findViewById<TextView>(R.id.textView6).text = exoPlayer!!.mediaMetadata.mediaType.toString()
-
         setListeners()
     }
 
@@ -62,7 +57,8 @@ class MediaPlayerActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        AlanAI.registerCallback(this, findViewById(R.id.alan_button))
+        AlanAI.registerCallback(this, alanButton)
+        AlanAI.setVisualState(alanButton, "media")
     }
 
     override fun onStop() {
@@ -89,6 +85,19 @@ class MediaPlayerActivity : AppCompatActivity() {
 
             mediaPlayer!!.pause()
         }
+
+        seekBar!!.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
+
+                mediaPlayer!!.seekTo(progress)
+                audioCurrentProgress!!.text = millisecondsToTimestamp(mediaPlayer!!.currentPosition)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
     }
 
     private fun millisecondsToTimestamp(time: Int): String {

@@ -182,7 +182,7 @@ intent('What is $(DATE)', p => {
 
     p.play(`${p.DATE.value} is a date`);
     p.play(`It is ${formattedDate}`);
-});*/*/
+});*/
 
 // Try: "What is today", "What is tomorrow" and "What is next Friday".
 // The '.value' field of this slot contains the user input, and the '.moment' field contains the moment.js object.

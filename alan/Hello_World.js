@@ -275,10 +275,6 @@ question(
     reply('Just say: (open library|Can you tell me how to make a mojito|Can you give tips on Safety gear).'),
 );
 
-intent('Execute order 66', p => {
-    p.play('Yes my Lord');
-});
-
 /*let chooseDrink = context(() => {
     follow('(I want to make a |how do I make) a $(DRINK mojito|cuba libre|pina colada)', p => {
         p.play(`You have ordered a ${p.DRINK.value}.`);
@@ -302,6 +298,16 @@ let chooseDrink = context(() => {
             p.play('Sure! To make a pina colada, follow these steps: Fill a blender with ice cubes. Add the white rum, pineapple juice, and coconut cream to the blender. Blend everything until smooth and frothy. Pour the mixture into a glass and garnish with a pineapple wedge.');
         } else if (p.DRINK.value === 'mojito') {
             p.play('Cut the lime into wedges and place them in a glass. Add the mint leaves and sugar to the glass. Muddle the lime, mint, and sugar gently using the back of a spoon. Fill the glass with crushed ice and pour the rum over it and stir. Top up the glass with soda water and garnish with a sprig of mint.');
+        }
+    });
+});
+
+let chooseFood = context(() => {
+    follow('(I want to make a |how do I make) a $(FOOD pasta with mince|potato salad)', p => {
+        if (p.FOOD.value === 'pasta with mince') {
+            p.play('Sure! To make pasta with mince, follow these steps: Set water in a pot to boil. Dice your onion and add it to a pan. Fry the onion for 5-8 minutes and add your minced meat into the pan. Cut up garlic and add to pan. When the water is boiling add your pasta. Fry meat until brown, boil pasta until al dente. Strain the pasta water and mix the meat and pasta.');
+        } else if (p.FOOD.value === 'potato salad') {
+            p.play('Sure! To make potato salad, follow these steps: Peel your potatoes. Add them to a pot and boil them. While potatoes are boiling, dice your sausage and onions into small cubes. When potatoes are boiled, dice them into small cubes. Add everything to a big bowl/pot. Add salt according to taste. Mix. Chill in freezer for at least an hour.');
         }
     });
 });

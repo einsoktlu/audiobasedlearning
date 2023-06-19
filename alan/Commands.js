@@ -14,11 +14,27 @@ intent('Go back', p => {
 });
 
 intent('pause', p => {
-    p.play({command: 'pause', screen: 'media'});
-    p.play('Pausing your audio file');
+    if (p.visual.screen === "media") {
+        p.play({command: 'pause'});
+        p.play('Pausing your audio file');
+    } else {
+        p.play('Sorry, you can only use this command on the media player');
+    }
 });
 
-intent('resume', p => {
-    p.play('Resuming your audio file');
-    p.play({command: 'resume', screen: 'media'});
+intent('$(PLAY play|resume)', p => {
+    if (p.visual.screen === "media") {
+        switch (p.PLAY.value) {
+            case 'play':
+                p.play('Playing your audio file');
+                break;
+            case 'resume':
+                p.play('Resuming your audio file');
+                break;
+        }
+
+        p.play({command: 'play'});
+    } else {
+        p.play('Sorry, you can only use this command on the media player');
+    }
 });

@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.alan.alansdk.AlanConfig
 import com.alan.alansdk.button.AlanButton
-import com.tlu.audiobasedlearning.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -17,34 +15,25 @@ class MainActivity : AppCompatActivity() {
         private const val ASR_PERMISSION_REQUEST_CODE = 0
     }
 
-    private var alanButton: AlanButton? = null
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var alanButton: AlanButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_main)
 
-        val config = AlanConfig.builder().setProjectId(getString(R.string.alan_api_key)).build()
+        ActivityBase.currentActivity = this
+        ActivityBase.mainActivity = this
+
         alanButton = findViewById(R.id.alan_button)
-        alanButton?.initWithConfig(config)
-
-        AlanAI.registerCallback(this, alanButton)
-        AlanAI.setVisualState(alanButton, "home")
+        AlanAI.initButton(this, alanButton, getString(R.string.home_screen))
 
         verifyAudioPermissions()
     }
 
     override fun onRestart() {
         super.onRestart()
-        AlanAI.registerCallback(this, alanButton)
-        AlanAI.setVisualState(alanButton, "home")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        alanButton?.clearCallbacks()
+        ActivityBase.currentActivity = this
+        AlanAI.setVisualState(alanButton, getString(R.string.home_screen))
     }
 
     private fun verifyAudioPermissions() {

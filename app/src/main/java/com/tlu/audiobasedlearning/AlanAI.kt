@@ -2,8 +2,10 @@ package com.tlu.audiobasedlearning
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.alan.alansdk.AlanCallback
+import com.alan.alansdk.AlanConfig
 import com.alan.alansdk.button.AlanButton
 import com.alan.alansdk.events.EventCommand
 import org.json.JSONException
@@ -11,7 +13,7 @@ import org.json.JSONObject
 
 class AlanAI {
     companion object {
-        private fun handleCommands(activity: AppCompatActivity, alanButton: AlanButton, commandJson: JSONObject) {
+        private fun handleCommands(commandJson: JSONObject) {
 
             val command: String
 
@@ -23,38 +25,63 @@ class AlanAI {
             }
 
             when (command) {
-                "navigate" -> handleNavigationCommand(activity, alanButton, commandJson.getString("screen"))
+                "navigate" -> handleNavigationCommand(commandJson.getString("screen"))
+                "play", "pause" -> handleMediaCommand(command)
             }
         }
 
-        private fun handleNavigationCommand(activity: AppCompatActivity, alanButton: AlanButton, screen: String) {
-            Log.d("AlanNavigation", activity.toString())
+        private fun handleNavigationCommand(screen: String) {
+            val mainActivity = ActivityBase.mainActivity
+            val currentActivity = ActivityBase.currentActivity
+
+            Log.d("AlanNavigation", currentActivity.toString())
+
             when (screen) {
-                "library" -> {
-                    alanButton.clearCallbacks()
-                    val intent = Intent(activity.applicationContext, LibraryActivity::class.java)
-                    activity.startActivity(intent)
+                mainActivity.getString(R.string.library_screen) -> {
+                    val mainAlanButton = mainActivity.findViewById<AlanButton>(R.id.alan_button)
+                    setVisualState(mainAlanButton, screen)
+
+                    val intent = Intent(currentActivity.applicationContext, LibraryActivity::class.java)
+                    currentActivity.startActivity(intent)
                 }
 
                 "back" -> {
-                    alanButton.clearCallbacks()
-                    activity.finish()
+                    // visual state is handled in the MainActivity class itself
+                    currentActivity.finish()
                 }
 
-                "media" -> {
-                    alanButton.clearCallbacks()
-                    val intent = Intent(activity.applicationContext, MediaPlayerActivity::class.java)
-                    activity.startActivity(intent)
+                mainActivity.getString(R.string.mediaplayer_screen) -> {
+                    val mainAlanButton = mainActivity.findViewById<AlanButton>(R.id.alan_button)
+                    setVisualState(mainAlanButton, screen)
+
+                    val intent = Intent(currentActivity.applicationContext, MediaPlayerActivity::class.java)
+                    currentActivity.startActivity(intent)
                 }
             }
         }
 
-        fun registerCallback(activity: AppCompatActivity, alanButton: AlanButton?) {
+        private fun handleMediaCommand(command: String) {
+            when (command) {
+                "play" -> {
+                    val button = ActivityBase.currentActivity.findViewById<Button>(R.id.playButton)
+                    if (button.isEnabled) {
+                        button.callOnClick()
+                    }
+                }
+
+                "pause" -> {
+                    val button = ActivityBase.currentActivity.findViewById<Button>(R.id.pauseButton)
+                    if (button.isEnabled) {
+                        button.callOnClick()
+                    }
+                }
+            }
+        }
+
+        private fun registerCallback(alanButton: AlanButton?) {
             val alanCallback: AlanCallback = object : AlanCallback() {
                 override fun onCommand(eventCommand: EventCommand) {
-                    if (alanButton != null) {
-                        handleCommands(activity, alanButton, eventCommand.data.getJSONObject("data"))
-                    }
+                    handleCommands(eventCommand.data.getJSONObject("data"))
                 }
             }
 
@@ -65,6 +92,14 @@ class AlanAI {
             val params = JSONObject()
             params.put("screen", screen)
             alanButton?.setVisualState(params.toString())
+        }
+
+        fun initButton(activity: AppCompatActivity, alanButton: AlanButton, screen: String) {
+            val config = AlanConfig.builder().setProjectId(activity.getString(R.string.alan_api_key)).build()
+            alanButton.initWithConfig(config)
+
+            registerCallback(alanButton)
+            setVisualState(alanButton, screen)
         }
     }
 }

@@ -4,7 +4,6 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
@@ -21,15 +20,12 @@ class MediaPlayerActivity : AppCompatActivity() {
     private var audioLength: TextView? = null
     private var nowPlaying: TextView? = null
     private var seekBar: SeekBar? = null
-    private var alanButton: AlanButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediaplayer)
 
-        alanButton = findViewById(R.id.alan_button)
-        AlanAI.registerCallback(this, alanButton)
-        AlanAI.setVisualState(alanButton, "media")
+        ActivityBase.currentActivity = this
 
         mediaPlayer = MediaPlayer.create(this, R.raw.cocktails)
         playButton = findViewById(R.id.playButton)
@@ -57,13 +53,9 @@ class MediaPlayerActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        AlanAI.registerCallback(this, alanButton)
-        AlanAI.setVisualState(alanButton, "media")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        alanButton?.clearCallbacks()
+        ActivityBase.currentActivity = this
+        val mainAlanButton: AlanButton = ActivityBase.mainActivity.findViewById(R.id.alan_button)
+        AlanAI.setVisualState(mainAlanButton, getString(R.string.mediaplayer_screen))
     }
 
     private fun setListeners() {

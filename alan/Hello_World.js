@@ -291,28 +291,18 @@ intent('Can I have something to drink', p => {
 // Notice: the first command wasn't matched again. This is because the context with this command wasn't active.
 
 let chooseDrink = context(() => {
-    follow('I want to make a drink', p => {
-        p.play("Sure! What drink do you want to make? Mojito, Cuba Libre, or Pina Colada?");
-    });
-
-    follow('(make|prepare) a $(DRINK mojito|cuba libre|pina colada)', p => {
+    follow('I want to make a $(DRINK mojito|cuba libre|pina colada)', p => {
         if (p.DRINK.value === 'mojito') {
-            p.play('To make a mojito, follow these steps: Cut the lime into wedges and place them in a glass. Add the mint leaves and sugar to the glass. Muddle the lime, mint, and sugar gently using the back of a spoon. Fill the glass with crushed ice and pour the rum over it. Stir the ingredients together. Top up the glass with soda water and garnish with a sprig of mint.');
+            p.play('To make a mojito, follow these steps: Cut the lime into wedges and place them in a glass. Add the mint leaves and sugar to the glass. Muddle the lime, mint, and sugar gently using the back of a spoon. Fill the glass with crushed ice and pour the rum over it and stir. Top up the glass with soda water and garnish with a sprig of mint.');
         } else if (p.DRINK.value === 'cuba libre') {
             p.play('To make a Cuba Libre, follow these steps: Fill a highball glass with ice cubes. Squeeze the juice of a lime wedge into the glass and drop the wedge in. Pour the dark rum over the ice and lime. Top up the glass with cola and give it a gentle stir.');
         } else if (p.DRINK.value === 'pina colada') {
             p.play('To make a Pina Colada, follow these steps: Fill a blender with ice cubes. Add the white rum, pineapple juice, and coconut cream to the blender. Blend everything until smooth and frothy. Pour the mixture into a glass and garnish with a pineapple wedge.');
-        } else {
-            p.play("I'm sorry, I don't have a recipe for that drink. Please choose between Mojito, Cuba Libre, or Pina Colada.");
         }
     });
 });
 
 let chooseFood = context(() => {
-    follow('I want to make food', p => {
-        p.play("Sure! What food do you want to make? Pasta with mince or potato salad?");
-    });
-
     follow('(make|cook) $(FOOD pasta with mince|potato salad)', p => {
         if (p.FOOD.value === 'pasta with mince') {
             p.play('To make pasta with mince, follow these steps: Set water in a pot to boil. Dice your onion and add it to a pan. Fry the onion for 5-8 minutes and add your minced meat into the pan. Cut up garlic and add it to the pan. When the water is boiling, add your pasta. Fry the meat until brown, boil the pasta until al dente. Strain the pasta water and mix the meat and pasta.');

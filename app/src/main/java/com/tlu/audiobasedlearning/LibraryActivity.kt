@@ -1,27 +1,50 @@
 package com.tlu.audiobasedlearning
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.common.MimeTypes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alan.alansdk.button.AlanButton
 
 class LibraryActivity : AppCompatActivity() {
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        // handle uri
+        val filename = Helpers.resolveFileNameFromUri(contentResolver, uri)
+        recyclerView.adapter = CustomAdapter(arrayOf(filename!!))
+
+        val intent = Intent(this@LibraryActivity, MediaPlayerActivity::class.java)
+        intent.putExtra("file_uri", uri.toString())
+        AlanAI.setVisualState(ActivityBase.mainActivity.findViewById(R.id.alan_button), getString(R.string.mediaplayer_screen))
+        startActivity(intent)
+        this@LibraryActivity.finish()
+    }
+
+    private lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_library)
 
         ActivityBase.currentActivity = this
 
-        val recyclerView: RecyclerView = findViewById(R.id.reclist)
+        recyclerView = findViewById(R.id.reclist)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = CustomAdapter(arrayOf("cocktails.mp3", "mojito.mp3", "viiul.mp3"))
+
+        findViewById<Button>(R.id.openFileButton).setOnClickListener {
+            getContent.launch(MimeTypes.AUDIO_MPEG)
+        }
     }
 
     override fun onRestart() {

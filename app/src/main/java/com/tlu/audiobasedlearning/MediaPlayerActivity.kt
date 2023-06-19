@@ -1,6 +1,7 @@
 package com.tlu.audiobasedlearning
 
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -27,7 +28,14 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         ActivityBase.currentActivity = this
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.cocktails)
+        val fileuri = intent.getStringExtra("file_uri")
+
+        mediaPlayer = if (fileuri == null) {
+            MediaPlayer.create(this, R.raw.cocktails)
+        } else {
+            MediaPlayer.create(this, Uri.parse(fileuri))
+        }
+
         playButton = findViewById(R.id.playButton)
         pauseButton = findViewById(R.id.pauseButton)
         audioCurrentProgress = findViewById(R.id.audioCurrentProgress)
@@ -37,7 +45,11 @@ class MediaPlayerActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
 
         pauseButton!!.isEnabled = false
-        nowPlaying!!.text = resources.getResourceEntryName(R.raw.cocktails)
+        nowPlaying!!.text = if (fileuri == null) {
+            resources.getResourceEntryName(R.raw.cocktails)
+        } else {
+            Helpers.resolveFileNameFromUri(contentResolver, Uri.parse(fileuri))
+        }
         seekBar!!.isClickable = false
         seekBar!!.max = mediaPlayer!!.duration
 

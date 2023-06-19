@@ -47,3 +47,19 @@ intent('Can you give me all of the pina colada ingredients?', p => {
 intent('Can you tell me how to make a pina colada?', p => {
     p.play('Fill a blender with ice cubes. Add the white rum, pineapple juice, and coconut cream to the blender. Blend everything until smooth and frothy. Pour the mixture into a glass and garnish with a pineapple wedge');
 });
+
+intent('What ingredients do I need to make pasta with minced meat', p => {
+    p.play('300-500 grams of minced pork or beef, 1-2 onions, 2-4 cloves of garlic, 300 grams of pasta');
+});
+
+intent('Can you tell me how to make pasta with minced meat', p => {
+    p.play('Set water in a pot to boil. Dice your onion and add it to a pan. Fry the onion for 5-8 minutes and add your minced meat into the pan. Cut up garlic and add to pan. When the water is boiling add your pasta. Fry meat until brown, boil pasta until al dente. Strain the pasta water and mix the meat and pasta.');
+});
+
+intent('What ingredients do I need to make a potato salad', p => {
+    p.play('1 kilograms of potatoes, 2 onions. 500 grams mayonnaise, 500 grams doctors sausage, 1 can of peas, 1 can of yellow peas, 1 can of diced pickles');
+});
+
+intent('Can you tell me how to make a classic potato salad', p => {
+    p.play('Peel your potatoes. Add them to a pot and boil them. While potatoes are boiling, dice your sausage and onions into small cubes. When potatoes are boiled, dice them into small cubes. Add everything to a big bowl/pot. Add salt according to taste. Mix. Chill in freezer for at least an hour');
+});

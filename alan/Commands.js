@@ -1,19 +1,19 @@
-intent('Go to my library', p => {
+intent('(Go to|Open) (my|the|) library', p => {
     p.play('Opening your library');
     p.play({command: 'navigate', screen: 'library'});
 });
 
-intent('Go to media player', p => {
+intent('(Go to|Open) (the|) media player', p => {
     p.play('Opening the media player');
     p.play({command: 'navigate', screen: 'media'}); 
 });
 
-intent('Go back', p => {
+intent('(Go|Take me) back', p => {
     p.play('Navigating back');
     p.play({command: 'navigate', screen: 'back'});
 });
 
-intent('pause', p => {
+intent('pause (audio|audio file|)', p => {
     if (p.visual.screen === "media") {
         p.play({command: 'pause'});
         p.play('Pausing your audio file');
@@ -22,7 +22,7 @@ intent('pause', p => {
     }
 });
 
-intent('$(PLAY play|resume)', p => {
+intent('$(PLAY play|resume) (audio|audio file|)', p => {
     if (p.visual.screen === "media") {
         switch (p.PLAY.value) {
             case 'play':

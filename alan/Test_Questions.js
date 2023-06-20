@@ -28,7 +28,7 @@ intent('Can you give me all of the mojito ingredients?', p => {
     p.play('Sure, mojito has a total of 5 ingredients. You will need 60 ml white rum, 1 lime, 8-10 fresh mint leaves, 2 teaspoons sugar, soda water, crushed ice');
 });
 
-intent('((Can|Could) you tell me how to|) make a mojito?', p => {
+intent('(Can|Could) you tell me how to make a mojito?', 'Make a mojito', p => {
     p.play('Cut the lime into wedges and place them in a glass. Add the mint leaves and sugar to the glass. Muddle the lime, mint, and sugar gently using a muddler or the back of a spoon. This will release the flavors and aromas. Fill the glass with crushed ice and pour the rum over it. Stir well to mix the ingredients. Top up the glass with soda water and garnish with a sprig of mint. Serve chilled and enjoy your refreshing Mojito!');
 });
 

@@ -12,4 +12,5 @@
     <string name="home_screen">home</string>
     <string name="library_screen">library</string>
     <string name="mediaplayer_screen">media</string>
+    <string name="library_list_filename">librarylist</string>
 </resources>

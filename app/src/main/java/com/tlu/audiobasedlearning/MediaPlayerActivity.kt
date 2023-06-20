@@ -1,5 +1,6 @@
 package com.tlu.audiobasedlearning
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alan.alansdk.button.AlanButton
 
@@ -28,12 +30,22 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         ActivityBase.currentActivity = this
 
-        val fileuri = intent.getStringExtra("file_uri")
+        val fileuri = intent.data
+        if (fileuri != null) {
+            contentResolver.takePersistableUriPermission(fileuri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
 
         mediaPlayer = if (fileuri == null) {
             MediaPlayer.create(this, R.raw.cocktails)
         } else {
-            MediaPlayer.create(this, Uri.parse(fileuri))
+            MediaPlayer.create(this, fileuri)
+        }
+
+        if (mediaPlayer == null) {
+            Toast.makeText(applicationContext, "File not found!", Toast.LENGTH_LONG)
+                .show()
+            finish()
+            return
         }
 
         playButton = findViewById(R.id.playButton)
@@ -48,7 +60,7 @@ class MediaPlayerActivity : AppCompatActivity() {
         nowPlaying!!.text = if (fileuri == null) {
             resources.getResourceEntryName(R.raw.cocktails)
         } else {
-            Helpers.resolveFileNameFromUri(contentResolver, Uri.parse(fileuri))
+            Helpers.resolveFileNameFromUri(contentResolver, fileuri)
         }
         seekBar!!.isClickable = false
         seekBar!!.max = mediaPlayer!!.duration

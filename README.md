@@ -17,7 +17,7 @@ Rakendus valmis TLÜ digitehnoloogiate instituudis tarkvaraarenduse suvepraktika
 1. Ava projekti kaust Android Studios.
 2. Minge `Resource Manager > String` ja valige ülevalt vasakult nurgast + ikoon ja siis `String Resource File`, et lisada uus ressursi fail. See fail on vajalik sellepärast, et projekti kood vajab Alan AI API võtit, millega siduda.
 3. Andke failile nimi (nt `secrets`) ja vajutage OK.
-4. Lisage sellesse ressursi faili sõne, mille `name` väärtuseks on `alan_api_key`. Selle sõne väärtuseks peaks olema Alan AI API võti. Seda loomulikult projektiga kaasa ei anta, ehk peate ise tegema Alan AI Studio keskkonnas endale kasutaja, ja lisama enda API võtme sealt võttes, või muud viisi saades projekti algse API võtme meie käest. **Pidage meeles, kui te ei kasuta meie algset API võtit, peate kõik häälkäsklused Alan AI Studios ise implementeerima!**
+4. Lisage sellesse ressursi faili sõne, mille `name` väärtuseks on `alan_api_key`. Selle sõne väärtuseks peaks olema Alan AI API võti. Seda loomulikult projektiga kaasa ei anta, ehk peate ise tegema Alan AI Studio keskkonnas endale kasutaja, ja lisama enda API võtme sealt võttes, või muud viisi saades projekti algse API võtme meie käest. **Pidage meeles, kui te ei kasuta meie algset API võtit, peate kõik häälkäsklused Alan AI Studios ise implementeerima! Kõik kasutusel olevad Alan AI häälkäsklused leiate projekti juurkaustas olevas `alan` kaustas.**
 
 See fail peaks selline välja nägema (kus `API_VÕTI` on asendatud Alan AI API võtmega):
 ```xml
